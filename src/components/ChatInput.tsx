@@ -3,6 +3,7 @@ import React, { useState, FormEvent } from 'react';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Send } from "lucide-react";
+import { Input } from './ui/input';
 
 interface ChatInputProps {
   onSubmit: (message: string) => void;
@@ -30,13 +31,13 @@ const ChatInput: React.FC<ChatInputProps> = ({ onSubmit, disabled }) => {
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2">
       <div className="relative">
-        <Textarea
+        <Input
           value={message}
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your message..."
-          className="pr-12 resize-none glass-effect"
-          rows={1}
+          className="pr-12 resize-none h-12 glass-effect"
+        //   rows={0}
           disabled={disabled}
         />
         <Button

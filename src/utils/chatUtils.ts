@@ -1,9 +1,8 @@
 
 export interface Message {
-  id: string;
-  role: 'user' | 'assistant';
+  id: string
+  role: 'user' | 'assistant' | 'system';
   content: string;
-  timestamp: Date;
 }
 
 export const generateId = (): string => {
@@ -16,7 +15,6 @@ export const getDefaultMessages = (): Message[] => {
       id: generateId(),
       role: 'assistant',
       content: 'Hello! I\'m your AI assistant. How can I help you today?',
-      timestamp: new Date(),
     },
   ];
 };
