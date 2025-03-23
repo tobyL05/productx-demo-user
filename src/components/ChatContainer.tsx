@@ -60,6 +60,7 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
         comment: feedback
       })
     }
+    setOpenDialog("")
   }
 
   return (
