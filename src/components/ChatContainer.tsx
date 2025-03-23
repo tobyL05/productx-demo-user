@@ -8,15 +8,19 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
 import { useLlm } from '@/hooks/use-llm';
+import { useRestClient } from '@/hooks/useRestClient';
 
 interface ChatContainerProps {
   initialMessages?: Message[];
 }
 
 const ChatContainer: React.FC<ChatContainerProps> = () => {
+  const { exchange } = useRestClient()
   const { messages, isTyping, setIsTyping, generateLlmResponse } = useLlm()
-  const [openDialog, setOpenDialog] = useState("");
+  const [openDialog, setOpenDialog] = useState<"" | "LIKE" | "DISLIKE">("");
+  const [feedback, setFeedback] = useState<string | undefined>()
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -43,6 +47,21 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
     }
   };
 
+  const handleFeedbackSubmission = async (rating: string) => {
+    console.log(`Send ${rating} with comment: ${feedback}`)
+    if (rating === "LIKE") {
+      exchange("POST", "http://localhost:3000/good_feed", {
+        prompt_session_id: 1,
+        comment: feedback
+      })
+    } else {
+      exchange("POST", "http://localhost:3000/bad_feed", {
+        prompt_session_id: 1,
+        comment: feedback
+      })
+    }
+  }
+
   return (
     <div className="flex flex-col min-h-[56em] w-full max-w-4xl mx-auto">
         <Dialog open={openDialog !== ""} onOpenChange={() => setOpenDialog("")}>
@@ -55,11 +74,13 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
             </DialogHeader>
             <Textarea 
                 placeholder={openDialog === "LIKE" ? "The bot answered clearly..." : "The bot was not..."}
+                value={feedback}
+                onChange={(e) => setFeedback(e.target.value)}
                 className="resize-none"
                 rows={1}
             />
             <DialogFooter>
-                <Button type="submit" onClick={() => {}}>Submit</Button>
+                <Button type="submit" onClick={() => handleFeedbackSubmission(openDialog)}>Submit</Button>
             </DialogFooter>
             </DialogContent>
 
