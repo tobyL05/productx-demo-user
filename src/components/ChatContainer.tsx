@@ -63,7 +63,7 @@ const ChatContainer: React.FC<ChatContainerProps> = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-[56em] w-full max-w-4xl mx-auto">
+    <div className="flex flex-col min-h-[54em] w-full max-w-4xl mx-auto">
         <Dialog open={openDialog !== ""} onOpenChange={() => setOpenDialog("")}>
             <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>

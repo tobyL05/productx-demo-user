@@ -4,13 +4,12 @@
 export function useRestClient() {
 
     
-    async function get(url: string, body) {
+    async function get(url: string) {
         const req = fetch(url, {
             method: "GET",
             headers: {
-                content: "application/json"
+                "content-type": "application/json"
             },
-            body: body
         })
         const res = (await req).json()
         return res 
@@ -21,9 +20,9 @@ export function useRestClient() {
         const req = fetch(url, {
             method: "POST",
             headers: {
-                content: "application/json"
+                "content-type": "application/json"
             },
-            body: body
+            body: JSON.stringify(body)
         })
         const res = (await req).json()
         return res
@@ -33,7 +32,7 @@ export function useRestClient() {
         if (method === "POST") {
             return post(url, body)
         } else if (method === "GET") {
-            return get(url, body)
+            return get(url)
         }
     }
 
